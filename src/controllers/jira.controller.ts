@@ -4,6 +4,7 @@ import { BadRequest } from "http-errors";
 import { IUserData } from "../interfaces/i-user-data";
 import TokenContents from "../decorators/token.decorator";
 import { IBoard } from "../interfaces/i-board";
+import { ISprint } from "../interfaces/i-sprint";
 
 @Controller("/jira")
 export default class JiraController implements IOnInit {
@@ -23,5 +24,10 @@ export default class JiraController implements IOnInit {
     @Get("/board/:boardId")
     public getBoard(@TokenContents() token: IUserData, @RequestParam("boardId") boardId: number): Promise<IBoard> {
         return this.jiraService.getBoard(token, boardId);
+    }
+
+    @Get("/sprint/:sprintId")
+    public getSprint(@TokenContents() token: IUserData, @RequestParam("sprintId") sprintId: number): Promise<ISprint> {
+        return this.jiraService.getSprint(token, sprintId);
     }
 }

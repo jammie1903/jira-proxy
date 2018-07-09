@@ -45,6 +45,17 @@ export default class JiraService implements IJiraService {
         }
     }
 
+    public async getSprint(userDetails: IUserData, sprintId: number) {
+        const json = await this.fetchJSON(
+            `${userDetails.jiraUrl}/rest/agile/1.0/sprint/${sprintId}`,
+            {
+                headers: {
+                    authorization: "Basic " + userDetails.jiraAuth
+                }
+            });
+        return this.mapSprint(json);
+    }
+
     private async getSprints(userDetails: IUserData, jiraBoardId: number) {
         let returnList: ISprint[] = [];
         let page = 0;
@@ -57,8 +68,8 @@ export default class JiraService implements IJiraService {
                     }
                 });
             returnList = returnList.concat(json.values.map(sprint => this.mapSprint(sprint)));
-            if(json.isLast) {
-                return returnList.sort((a,b) => b.startDate - a.startDate);
+            if (json.isLast) {
+                return returnList.sort((a, b) => b.startDate - a.startDate);
             }
             page++;
         }
