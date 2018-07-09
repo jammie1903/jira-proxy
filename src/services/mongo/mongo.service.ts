@@ -3,7 +3,7 @@ import { IMongoService } from "./i-mongo.service";
 import { MongoClient, MongoError, Db } from "mongodb";
 
 const username = "jira-proxy-api"
-const password = "";
+const password = process.env.MONGO_DB_PASSWORD;
 // Connection URL
 const url = `mongodb+srv://${username}:${password}@jira-data-ylhxg.mongodb.net/test?retryWrites=true`
 
