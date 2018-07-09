@@ -44,8 +44,10 @@ export default class CustomDataService implements ICustomDataService {
             }
             return db.collection(type).findOne(query)
                 .then(item => {
-                    item.id = item._id;
-                    delete item._id;
+                    if (item) {
+                        item.id = item._id;
+                        delete item._id;
+                    }
                     return item;
                 });
         });
