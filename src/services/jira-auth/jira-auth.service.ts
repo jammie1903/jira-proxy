@@ -4,7 +4,7 @@ import * as HttpErrors from "http-errors";
 import fetch from "node-fetch";
 import { ISecretService } from "../secret/i-secret.service";
 import { IJwtService } from "../jwt/i-jwt.service";
-import { ITokenContent } from "../../interfaces/i-token-content";
+import { IUserData } from "../../interfaces/i-user-data";
 
 @Service("jiraAuthService")
 export default class JiraAuthService implements IJiraAuthService {
@@ -49,7 +49,7 @@ export default class JiraAuthService implements IJiraAuthService {
         });
     }
 
-    private createJWTBody(jiraUrl: string, jiraData: any, authToken: string): ITokenContent {
+    private createJWTBody(jiraUrl: string, jiraData: any, authToken: string): IUserData {
         const encryptedAuthToken = this.secretService.encrypt(authToken);
 
         return {

@@ -3,8 +3,9 @@ import { Request } from "express";
 import { BadRequest } from "http-errors";
 import { ServiceCache } from "express-utils";
 import { IJwtService } from "../services/jwt/i-jwt.service";
+import { ISecretService } from "../services/secret/i-secret.service";
 
-export default function TokenContents() {
+export default function TokenContents(decode = true) {
     return function (target: any, propertyKey: string, parameterIndex: number) {
         registerEndpointParameterDecorator(target, propertyKey, parameterIndex, (request: Request) => {
             const header = request.header("authorization");
@@ -12,7 +13,11 @@ export default function TokenContents() {
                 throw new BadRequest("bearer authentication must be provided");
             }
             const token = header.trim().substr(7).trim();
-            return (ServiceCache.get("jwtService") as IJwtService).unpack(token);
+            const tokenContents = (ServiceCache.get("jwtService") as IJwtService).unpack(token);
+            if(decode) {
+                tokenContents.jiraAuth = (ServiceCache.get("secretService") as ISecretService).decrypt(tokenContents.jiraAuth);
+            }
+            return tokenContents;
         });
     };
 }

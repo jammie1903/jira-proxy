@@ -1,7 +1,7 @@
 import { Controller, Post, RequestBody, Autowired, IOnInit, Get } from "express-utils";
 import { IJiraAuthService } from "../services/jira-auth/i-jira-auth.service";
 import { BadRequest } from "http-errors";
-import { ITokenContent } from "../interfaces/i-token-content";
+import { IUserData } from "../interfaces/i-user-data";
 import TokenContents from "../decorators/token.decorator";
 
 @Controller("/auth")
@@ -29,7 +29,7 @@ export default class AuthController implements IOnInit {
     }
 
     @Get("/whoami")
-    public async whoami(@TokenContents() token: ITokenContent): Promise<ITokenContent> {
+    public whoami(@TokenContents(false) token: IUserData): IUserData {
         return token;
     }
 }

@@ -1,6 +1,6 @@
-import { ITokenContent } from "../../interfaces/i-token-content";
+import { IUserData } from "../../interfaces/i-user-data";
 
 export interface IJwtService {
-    create(tokenBody: ITokenContent): string;
-    unpack(token: string): ITokenContent;
+    create(tokenBody: IUserData): string;
+    unpack(token: string): IUserData;
 }

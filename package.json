@@ -12,11 +12,13 @@
   "author": "Jamie Pennell",
   "license": "ISC",
   "dependencies": {
+    "@types/mongodb": "^3.1.1",
     "body-parser": "^1.17.1",
     "debug": "^2.6.4",
     "express": "^4.15.2",
     "express-utils": "git+https://github.com/jammie1903/express-utils.git",
     "jsonwebtoken": "^8.3.0",
+    "mongodb": "^3.1.1",
     "morgan": "^1.8.1",
     "node-fetch": "^2.1.2",
     "reflect-metadata": "^0.1.10"

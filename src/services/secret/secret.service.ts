@@ -23,14 +23,14 @@ export default class SecretService implements ISecretService {
     }
 
     public encrypt(text: string): string {
-        const cipher = crypto.createCipher('aes-256-gcm', this.secret)
+        const cipher = crypto.createCipher('aes-256-ctr', this.secret)
         let crypted = cipher.update(text, 'utf8', 'hex')
         crypted += cipher.final('hex');
         return crypted;
     }
 
     public decrypt(text: string): string {
-        const decipher = crypto.createDecipher('aes-256-gcm', this.secret)
+        const decipher = crypto.createDecipher('aes-256-ctr', this.secret)
         let dec = decipher.update(text, 'hex', 'utf8')
         dec += decipher.final('utf8');
         return dec;

@@ -18,11 +18,18 @@ class App extends ExpressApp {
         this.express.all("*", this.allowHeaders);
     }
 
+    protected errorHandler(err, req: Request, res: Response, next: NextFunction) {
+        const statusCode = err.statusCode || err.status || 500;
+        const message = err.message || err.toString();
+        res.statusCode = statusCode
+        res.jsonp(message ? { statusCode, message } : { statusCode });
+    }
+
     private allowHeaders(req: Request, res: Response, next: NextFunction) {
         res.header("Access-Control-Allow-Origin", "*");
         res.setHeader("Access-Control-Allow-Credentials", "true");
         res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-        res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, token");
+        res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, token, Authorization");
         if (req.method === "OPTIONS") {
             res.send();
         } else {
@@ -36,19 +43,5 @@ class App extends ExpressApp {
 }
 
 const app = new App()
-
-app.express.use((req, res, next) => {
-    next(new NotFound());
-});
-
-// 500
-app.express.use((err, req: Request, res: Response, next: NextFunction) => {
-    if (!(err instanceof HttpError)) {
-        console.error(err);
-        err = new InternalServerError();
-    }
-    res.statusCode = err.statusCode;
-    res.jsonp(err);
-});
 
 export default app.express;

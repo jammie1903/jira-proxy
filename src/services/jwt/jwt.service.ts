@@ -3,7 +3,7 @@ import { IJwtService } from "./i-jwt.service";
 import * as jwt from "jsonwebtoken";
 import { ISecretService } from "../secret/i-secret.service";
 import { Unauthorized } from "http-errors";
-import { ITokenContent } from "../../interfaces/i-token-content";
+import { IUserData } from "../../interfaces/i-user-data";
 
 @Service("jwtService")
 export default class JwtService implements IJwtService {
@@ -15,11 +15,11 @@ export default class JwtService implements IJwtService {
         console.log(this.constructor.name, "initialised");
     }
 
-    create(tokenBody: ITokenContent): string {
+    create(tokenBody: IUserData): string {
         return jwt.sign(tokenBody, this.secretService.get());
     }
 
-    unpack(token: string): ITokenContent {
+    unpack(token: string): IUserData {
         try {
             return jwt.verify(token, this.secretService.get());
         } catch (err) {
